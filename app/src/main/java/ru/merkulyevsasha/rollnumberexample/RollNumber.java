@@ -58,7 +58,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
             addView(digit);
         }
 
-        setBackgroundColor(Color.DKGRAY);
+        setBackgroundColor(Color.parseColor("#00132B"));
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER);
 

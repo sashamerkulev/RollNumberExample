@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 public class RollDigit extends LinearLayout{
 
-    private static int DURATION = 500;
+    private static int DURATION = 300;
     private static float TEXTSIZE = 3/5F;
     private static int MARGIN = 8;
 
@@ -102,8 +102,8 @@ public class RollDigit extends LinearLayout{
     private void setBackground() {
         ShapeDrawable mDrawable = new ShapeDrawable(new RectShape());
         mDrawable.getPaint().setShader(new RadialGradient(normalTextBounds.width()/2,
-                normalTextBounds.height()/5+normalTextBounds.height(), normalTextBounds.height(),
-                Color.parseColor("#606060"), Color.parseColor("#000000"), Shader.TileMode.CLAMP));
+                normalTextBounds.height()*5/2, normalTextBounds.height()*5,
+                Color.parseColor("#004AD5"), Color.parseColor("#001369"), Shader.TileMode.REPEAT));
         setBackground(mDrawable );
     }
 
