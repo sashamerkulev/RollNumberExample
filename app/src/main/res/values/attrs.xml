@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RollNumber">
+        <attr name="number" format="integer" />
+        <attr name="digits" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="RollDigit">
+        <attr name="textSize" format="integer" />
+        <attr name="digit" format="integer" />
+    </declare-styleable>
+</resources>
