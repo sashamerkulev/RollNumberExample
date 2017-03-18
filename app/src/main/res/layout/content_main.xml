@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:digits="6"
-            app:number="11983"
+            app:number="1983"
             app:textSize="18"
             >
 

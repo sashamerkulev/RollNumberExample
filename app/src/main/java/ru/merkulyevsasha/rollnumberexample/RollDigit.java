@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 public class RollDigit extends LinearLayout{
 
-    private static int DURATION = 300;
+    private static int DURATION = 250;
     private static float TEXTSIZE = 3/5F;
     private static int MARGIN = 8;
 

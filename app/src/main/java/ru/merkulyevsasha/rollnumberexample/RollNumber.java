@@ -52,7 +52,6 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
         rollDigits = new RollDigit[numberString.length()];
         for (int i = 0; i < numberString.length(); i++) {
             RollDigit digit = new RollDigit(context, attrs);
-            ;
             digit.setDigit(Integer.parseInt(numberString.substring(i, i + 1)));
             rollDigits[i] = digit;
             addView(digit);
@@ -66,10 +65,16 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
 
     private String getNumberString(int number) {
         String numberString = String.valueOf(number);
-        while (numberString.length() < digits) {
-            numberString = "0" + numberString;
+        if (digits <= numberString.length()){
+            return numberString;
         }
-        return numberString;
+        int zeros = digits - numberString.length();
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i < zeros; i++){
+            sb.append("0");
+        }
+        sb.append(numberString);
+        return sb.toString();
     }
 
     public void inc() {
@@ -94,7 +99,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
 
     private void decrementIf(int current) {
         if (current_digit >= 0) {
-            decrement(current);
+            rollDigits[current].dec(this);
         } else {
             animationEnd = true;
         }
@@ -102,7 +107,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
 
     private void incrementIf(int current) {
         if (current >= 0) {
-            increment(current);
+            rollDigits[current].inc(this);
         } else {
             animationEnd = true;
         }
@@ -120,14 +125,6 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
         } else {
             animationEnd = true;
         }
-    }
-
-    private void increment(int current) {
-        rollDigits[current].inc(this);
-    }
-
-    private void decrement(int current) {
-        rollDigits[current].dec(this);
     }
 
     public int getNumber(){
