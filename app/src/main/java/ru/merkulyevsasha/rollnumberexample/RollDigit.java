@@ -153,7 +153,6 @@ public class RollDigit extends LinearLayout{
     public void dec(final OnAnimationEndListener callback) {
 
         hiddenDigit.setText(String.valueOf(prevNumber(prevNumber(digit))));
-        hiddenDigit.setVisibility(View.VISIBLE);
 
         final float prevYStart = views[0].getY();
 
@@ -193,6 +192,7 @@ public class RollDigit extends LinearLayout{
         mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                hiddenDigit.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -233,7 +233,6 @@ public class RollDigit extends LinearLayout{
     public void inc(final OnAnimationEndListener callback) {
 
         hiddenDigit.setText(String.valueOf(nextNumber(nextNumber(digit))));
-        hiddenDigit.setVisibility(View.VISIBLE);
 
         final float prevYStart = views[0].getY();
 
@@ -271,6 +270,7 @@ public class RollDigit extends LinearLayout{
         mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                hiddenDigit.setVisibility(View.VISIBLE);
             }
 
             @Override
