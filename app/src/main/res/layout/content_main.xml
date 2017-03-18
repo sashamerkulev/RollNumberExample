@@ -28,8 +28,8 @@
             android:padding="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:digits="3"
-            app:number="983"
+            app:digits="6"
+            app:number="11983"
             app:textSize="18"
             >
 

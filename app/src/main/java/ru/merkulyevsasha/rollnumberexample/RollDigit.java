@@ -38,52 +38,81 @@ public class RollDigit extends LinearLayout{
 
     private TextView hiddenDigit;
 
-    private int w;
-    private int h;
-
     private Paint normalTextPaint;
     private Rect normalTextBounds;
-
 
     public RollDigit(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        normalTextPaint = new Paint();
-        normalTextBounds = new Rect();
-
-        views = new TextView[3];
-
-        views[0] = createTextView(context, View.VISIBLE);
-        views[1] = createTextView(context, View.VISIBLE);
-        views[2] = createTextView(context, View.VISIBLE);
-
-        hiddenDigit = createTextView(context, View.GONE);
+        Init(context);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RollDigit,
-                0, 0);
-
+                attrs, R.styleable.RollDigit, 0, 0);
         try {
             digit = attributes.getInteger(R.styleable.RollDigit_digit, 1);
+            if (digit <= 0) {
+                throw new NumberFormatException();
+            }
+
             textSize = attributes.getInteger(R.styleable.RollDigit_textSize, 24);
+            calculateTextBounds();
+            setDigit(digit);
+            setTextSize();
 
         } finally {
             attributes.recycle();
         }
 
-        setDigit(digit);
-        setTextSize(context, attrs);
+        setBackground();
+
+        setLayoutParams(context, attrs);
 
         addView(views[0]);
         addView(views[1]);
         addView(views[2]);
         addView(hiddenDigit);
 
-//        setBackgroundColor(Color.BLACK);
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
 
+    }
+
+    private void Init(@NonNull Context context) {
+        normalTextPaint = new Paint();
+        normalTextBounds = new Rect();
+        views = new TextView[3];
+
+        views[0] = createTextView(context, View.VISIBLE);
+        views[1] = createTextView(context, View.VISIBLE);
+        views[2] = createTextView(context, View.VISIBLE);
+        hiddenDigit = createTextView(context, View.GONE);
+    }
+
+    private void setLayoutParams(@NonNull Context context, @Nullable AttributeSet attrs) {
+        int w = (int)(normalTextBounds.width()* 1.5)+getPaddingLeft() + getPaddingRight();
+        int h = normalTextBounds.height()*5 + getPaddingBottom() + getPaddingTop();
+
+        LayoutParams params = new LayoutParams(context, attrs);
+        params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
+        params.width = w;
+        params.height = h;
+        setLayoutParams(params);
+    }
+
+    private void setBackground() {
+        ShapeDrawable mDrawable = new ShapeDrawable(new RectShape());
+        mDrawable.getPaint().setShader(new RadialGradient(normalTextBounds.width()/2,
+                normalTextBounds.height()/5+normalTextBounds.height(), normalTextBounds.height(),
+                Color.parseColor("#606060"), Color.parseColor("#000000"), Shader.TileMode.CLAMP));
+        setBackground(mDrawable );
+    }
+
+    private void calculateTextBounds() {
+        normalTextPaint.setStyle(Paint.Style.FILL);
+        normalTextPaint.setColor(Color.WHITE);
+        normalTextPaint.setStrokeWidth(2);
+        normalTextPaint.setTextSize(textSize* getContext().getResources().getDisplayMetrics().density);
+        normalTextPaint.getTextBounds("8", 0, 1, normalTextBounds);
     }
 
     private TextView createTextView(Context context, int visibility){
@@ -94,36 +123,10 @@ public class RollDigit extends LinearLayout{
         return r;
     }
 
-    public void setTextSize(Context context, AttributeSet attrs){
-
-        normalTextPaint.setStyle(Paint.Style.FILL);
-        normalTextPaint.setColor(Color.WHITE);
-        normalTextPaint.setStrokeWidth(2);
-        normalTextPaint.setTextSize(textSize* getContext().getResources().getDisplayMetrics().density);
-        normalTextPaint.getTextBounds("8", 0, 1, normalTextBounds);
-
-        ShapeDrawable mDrawable = new ShapeDrawable(new RectShape());
-        mDrawable.getPaint().setShader(new RadialGradient(normalTextBounds.width()/2,
-                normalTextBounds.height()/5+normalTextBounds.height(), normalTextBounds.height(),
-                Color.parseColor("#606060"), Color.parseColor("#000000"), Shader.TileMode.CLAMP));
-        setBackground(mDrawable );
-
-        w = (int)(normalTextBounds.width()* 1.5)+getPaddingLeft() + getPaddingRight();
-        h = normalTextBounds.height()*5 + getPaddingBottom() + getPaddingTop();
-
-        LinearLayout.LayoutParams params = new LayoutParams(context, attrs);
-        params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
-        params.width = w;
-        params.height = h;
-        setLayoutParams(params);
-
-
-        hiddenDigit.setTextSize(textSize*TEXTSIZE);
-
+    private void setTextSize(){
+        hiddenDigit.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize*TEXTSIZE);
         views[0].setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize*TEXTSIZE);
-
         views[1].setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
-
         views[2].setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize*TEXTSIZE);
     }
 
@@ -171,7 +174,6 @@ public class RollDigit extends LinearLayout{
                 .ofFloat(views[0], "textSize", textSize*TEXTSIZE, textSize)
                 .setDuration(DURATION);
 
-
         ObjectAnimator yNumberAnimator = ObjectAnimator
                 .ofFloat(views[1], "y", numberYStart, nextYStart)
                 .setDuration(DURATION);
@@ -182,8 +184,6 @@ public class RollDigit extends LinearLayout{
         ObjectAnimator yNextAnimator = ObjectAnimator
                 .ofFloat(views[2], "y", nextYStart, nextYStart+normalTextBounds.height()*2)
                 .setDuration(DURATION);
-
-
 
         AnimatorSet mAnimator = new AnimatorSet();
         mAnimator.play(yNumberAnimator).with(sizeNumberAnimator)
@@ -261,7 +261,6 @@ public class RollDigit extends LinearLayout{
         ObjectAnimator yNextNextAnimator = ObjectAnimator
                 .ofFloat(hiddenDigit, "y", nextYStart+normalTextBounds.height(), nextYStart)
                 .setDuration(DURATION);
-
 
         AnimatorSet mAnimator = new AnimatorSet();
         mAnimator.play(yNumberAnimator).with(sizeNumberAnimator)
