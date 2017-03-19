@@ -85,7 +85,7 @@ public class RollNumber extends LinearLayout {
             if (number > getMaxNumber()){
                 number = 0;
             }
-            Operation.startOperation(OperationEnum.Increment, digits, rollDigits);
+            Operation.start(OperationEnum.Increment, digits, rollDigits);
         }
     }
 
@@ -95,7 +95,7 @@ public class RollNumber extends LinearLayout {
             if (number < 0){
                 number = getMaxNumber();
             }
-            Operation.startOperation(OperationEnum.Decrement, digits, rollDigits);
+            Operation.start(OperationEnum.Decrement, digits, rollDigits);
         }
     }
 
@@ -141,11 +141,11 @@ public class RollNumber extends LinearLayout {
                 continue;
 
             if (newDigit > oldDigit) {
-                AnimationCounter.startOperation(OperationEnum.Increment, i, newDigit - oldDigit, rollDigits);
+                AnimationCounter.start(OperationEnum.Increment, i, newDigit - oldDigit, rollDigits);
             }
 
             if (newDigit < oldDigit){
-                AnimationCounter.startOperation(OperationEnum.Decrement, i, oldDigit - newDigit, rollDigits );
+                AnimationCounter.start(OperationEnum.Decrement, i, oldDigit - newDigit, rollDigits );
             }
         }
     }

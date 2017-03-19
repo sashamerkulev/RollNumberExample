@@ -27,7 +27,7 @@ abstract class Operation implements OnAnimationEndListener{
     protected abstract void start();
 
 
-    static Operation startOperation(OperationEnum operationEnum, int digit, RollDigit[] digits){
+    static Operation start(OperationEnum operationEnum, int digit, RollDigit[] digits){
         Operation oper = operationEnum == OperationEnum.Decrement
                 ? new Decrement(digit-1, digits)
                 : new Increment(digit-1, digits);

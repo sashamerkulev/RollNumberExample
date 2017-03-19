@@ -25,7 +25,7 @@ abstract class AnimationCounter  implements OnAnimationEndListener{
         }
     }
 
-    static AnimationCounter startOperation(OperationEnum operationEnum, int digit, int times, RollDigit[] rollDigits){
+    static AnimationCounter start(OperationEnum operationEnum, int digit, int times, RollDigit[] rollDigits){
         AnimationCounter counter = operationEnum == OperationEnum.Decrement
                 ? new AnimationDecCounter(digit, times, rollDigits)
                 : new AnimationIncCounter(digit, times, rollDigits);
