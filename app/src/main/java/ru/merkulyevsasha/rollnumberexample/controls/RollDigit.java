@@ -29,19 +29,19 @@ import ru.merkulyevsasha.rollnumberexample.R;
 
 public class RollDigit extends LinearLayout{
 
-    private static int DURATION = 250;
-    private static float TEXTSIZE = 3/5F;
-    private static int MARGIN = 8;
+    private static final int DURATION = 250;
+    private static final float TEXTSIZE = 3/5F;
+    private static final int MARGIN = 8;
 
     private int digit;
     private int textSize;
 
-    private TextView[] views;
+    private final TextView[] views;
 
     private TextView hiddenDigit;
 
-    private Paint normalTextPaint;
-    private Rect normalTextBounds;
+    private final Paint normalTextPaint;
+    private final Rect normalTextBounds;
 
     public RollDigit(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

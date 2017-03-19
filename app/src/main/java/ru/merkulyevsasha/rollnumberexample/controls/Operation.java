@@ -7,7 +7,7 @@ package ru.merkulyevsasha.rollnumberexample.controls;
 abstract class Operation implements OnAnimationEndListener{
 
     int digit;
-    RollDigit[] rollDigits;
+    final RollDigit[] rollDigits;
 
     Operation(int digit, RollDigit[] rollDigits){
         this.digit = digit;
@@ -24,7 +24,7 @@ abstract class Operation implements OnAnimationEndListener{
         }
     }
 
-    public abstract void start();
+    protected abstract void start();
 
 
     static Operation startOperation(OperationEnum operationEnum, int digit, RollDigit[] digits){

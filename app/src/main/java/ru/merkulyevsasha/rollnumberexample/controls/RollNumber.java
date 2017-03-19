@@ -60,8 +60,8 @@ public class RollNumber extends LinearLayout {
 
     public void onStart(Context context){
         clearAnimation();
-        for(int i=0; i < rollDigits.length; i++){
-            rollDigits[i].onStart(context);
+        for (RollDigit rollDigit : rollDigits) {
+            rollDigit.onStart(context);
         }
     }
 
@@ -99,8 +99,8 @@ public class RollNumber extends LinearLayout {
 
     private String getStringDigits(){
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i < rollDigits.length; i++){
-            sb.append(rollDigits[i].getDigit());
+        for (RollDigit rollDigit : rollDigits) {
+            sb.append(rollDigit.getDigit());
         }
         return sb.toString();
     }
