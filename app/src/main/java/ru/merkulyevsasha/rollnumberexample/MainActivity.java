@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(root, R.string.number_empty_validation_message, Snackbar.LENGTH_LONG).show();
                     return;
                 }
+                mRollNumber.setNumber(Integer.parseInt(numberText));
             }
         });
 

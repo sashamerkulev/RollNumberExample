@@ -131,6 +131,73 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
         return number;
     }
 
+    public void setNumber(int newNumber) {
+        String newNumberString = getNumberString(newNumber);
+        String numberString = getNumberString(number);
+        this.number = newNumber;
 
+
+        for(int i=0; i < newNumberString.length(); i++){
+            int newDigit = Integer.parseInt(newNumberString.substring(i, i+1));
+            int oldDigit = Integer.parseInt(numberString.substring(i, i+1));
+
+            if (newDigit == oldDigit)
+                continue;
+
+            if (newDigit > oldDigit) {
+                AnimationIncCounter inccount = new AnimationIncCounter(i, newDigit - oldDigit);
+                inccount.start();
+            }
+
+            if (newDigit < oldDigit){
+                AnimationDecCounter deccount = new AnimationDecCounter(i, oldDigit - newDigit);
+                deccount.start();
+            }
+        }
+    }
+
+    private abstract class AnimationCounter  implements OnAnimationEndListener{
+        int digit;
+        int animationCounter;
+
+        AnimationCounter(int digit, int counter){
+            this.animationCounter = counter;
+            this.digit = digit;
+        }
+
+        public abstract void start();
+
+        @Override
+        public void onAnimationEnd(boolean nextDigit) {
+            animationCounter--;
+            if (animationCounter > 0){
+                start();
+            }
+        }
+    }
+
+    private class AnimationIncCounter extends AnimationCounter{
+
+        AnimationIncCounter(int digit, int counter){
+            super(digit, counter);
+        }
+
+        public void start(){
+            rollDigits[digit].inc(this);
+        }
+
+    }
+
+    private class AnimationDecCounter extends AnimationCounter{
+
+        AnimationDecCounter(int digit, int counter){
+            super(digit, counter);
+        }
+
+        public void start(){
+            rollDigits[digit].dec(this);
+        }
+
+    }
 
 }
