@@ -13,10 +13,12 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button mStart;
     private RollNumber mRollNumber;
 
     private Timer mTimer;
     private TimerTask mTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         incr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cancelTimer();
                 mRollNumber.inc();
             }
         });
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         decr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cancelTimer();
                 mRollNumber.dec();
             }
         });
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(root, R.string.number_empty_validation_message, Snackbar.LENGTH_LONG).show();
                     return;
                 }
+                cancelTimer();
                 mRollNumber.setNumber(Integer.parseInt(numberText));
             }
         });
@@ -61,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
         mTimer = new Timer();
         mTask = getNewTimerTask();
 
-        final Button start = (Button)findViewById(R.id.button_start);
-        start.setOnClickListener(new View.OnClickListener() {
+        mStart = (Button)findViewById(R.id.button_start);
+        mStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = start.getText().toString();
+                String title = mStart.getText().toString();
                 if (title.equals(getString(R.string.start_button_title))){
-                    start.setText(R.string.stop_button_title);
+                    mStart.setText(R.string.stop_button_title);
                     try {
                         mTimer.schedule(mTask, 0, 1000);
                     } catch(Exception e){
@@ -75,10 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(e.getMessage());
                     }
                 } else {
-                    start.setText(R.string.start_button_title);
-                    mTimer.cancel();
-                    mTask  = getNewTimerTask();
-                    mTimer = new Timer();
+                    cancelTimer();
                 }
             }
         });
@@ -97,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         };
+    }
+
+    private void cancelTimer(){
+        mStart.setText(R.string.start_button_title);
+        mTimer.cancel();
+        mTask  = getNewTimerTask();
+        mTimer = new Timer();
     }
 
 }
