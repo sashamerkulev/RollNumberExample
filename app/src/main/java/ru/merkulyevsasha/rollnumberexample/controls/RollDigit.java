@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.rollnumberexample;
+package ru.merkulyevsasha.rollnumberexample.controls;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -20,6 +20,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import ru.merkulyevsasha.rollnumberexample.R;
 
 /**
  * Created by sasha on 17.03.2017.

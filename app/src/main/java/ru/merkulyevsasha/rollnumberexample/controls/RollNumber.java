@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.rollnumberexample;
+package ru.merkulyevsasha.rollnumberexample.controls;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
+
+import ru.merkulyevsasha.rollnumberexample.R;
 
 /**
  * Created by sasha on 17.03.2017.
@@ -73,14 +75,14 @@ public class RollNumber extends LinearLayout {
     public void inc() {
         if (isStable()) {
             number++;
-            startOperation(OperationEnum.Increment, digits);
+            Operation.startOperation(OperationEnum.Increment, digits, rollDigits);
         }
     }
 
     public void dec() {
         if (isStable()) {
             number--;
-            startOperation(OperationEnum.Decrement, digits);
+            Operation.startOperation(OperationEnum.Decrement, digits, rollDigits);
         }
     }
 
@@ -118,127 +120,13 @@ public class RollNumber extends LinearLayout {
                 continue;
 
             if (newDigit > oldDigit) {
-                startOperation(OperationEnum.Increment, i, newDigit - oldDigit);
+                AnimationCounter.startOperation(OperationEnum.Increment, i, newDigit - oldDigit, rollDigits);
             }
 
             if (newDigit < oldDigit){
-                startOperation(OperationEnum.Decrement, i, oldDigit - newDigit );
+                AnimationCounter.startOperation(OperationEnum.Decrement, i, oldDigit - newDigit, rollDigits );
             }
         }
-    }
-
-    Operation startOperation(OperationEnum operationEnum, int digits){
-        Operation oper = operationEnum == OperationEnum.Decrement
-                ? new Decrement(digits-1)
-                : new Increment(digits-1);
-        oper.start();
-        return oper;
-    }
-
-    AnimationCounter startOperation(OperationEnum operationEnum, int digit, int times){
-        AnimationCounter counter = operationEnum == OperationEnum.Decrement
-                ? new AnimationDecCounter(digit, times)
-                : new AnimationIncCounter(digit, times);
-        counter.start();
-        return counter;
-    }
-
-    private abstract class AnimationCounter  implements OnAnimationEndListener{
-        int digit;
-        int animationCounter;
-
-        AnimationCounter(int digit, int counter){
-            this.animationCounter = counter;
-            this.digit = digit;
-        }
-
-        public abstract void start();
-
-        @Override
-        public void onAnimationEnd(boolean overflow) {
-            animationCounter--;
-            if (animationCounter > 0){
-                start();
-            }
-        }
-    }
-
-    private class AnimationIncCounter extends AnimationCounter{
-
-        AnimationIncCounter(int digit, int counter){
-            super(digit, counter);
-        }
-
-        @Override
-        public void start(){
-            rollDigits[digit].inc(this);
-        }
-
-    }
-
-    private class AnimationDecCounter extends AnimationCounter{
-
-        AnimationDecCounter(int digit, int counter){
-            super(digit, counter);
-        }
-
-        @Override
-        public void start(){
-            rollDigits[digit].dec(this);
-        }
-
-    }
-
-    private enum OperationEnum {
-        Increment,
-        Decrement
-    }
-
-    private abstract class Operation implements OnAnimationEndListener{
-
-        int digit;
-        Operation(int digit){
-            this.digit = digit;
-        }
-
-        @Override
-        public void onAnimationEnd(boolean overflow) {
-            if (overflow){
-                digit--;
-                if (digit >=0){
-                    start();
-                }
-            }
-        }
-
-        public abstract void start();
-
-    }
-
-    private class Increment extends Operation {
-
-        Increment(int digit){
-            super(digit);
-        }
-
-        @Override
-        public void start(){
-            rollDigits[digit].inc(this);
-        }
-
-    }
-
-    private class Decrement extends Operation {
-
-        Decrement(int digit){
-            super(digit);
-        }
-
-        @Override
-        public void start(){
-            rollDigits[digit].dec(this);
-        }
-
     }
 
 }

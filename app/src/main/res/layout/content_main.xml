@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             >
 
-                <ru.merkulyevsasha.rollnumberexample.RollNumber
+                <ru.merkulyevsasha.rollnumberexample.controls.RollNumber
                     android:id="@+id/roll_number"
                     android:padding="4dp"
                     android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
                     app:textSize="18"
                     >
 
-                </ru.merkulyevsasha.rollnumberexample.RollNumber>
+                </ru.merkulyevsasha.rollnumberexample.controls.RollNumber>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

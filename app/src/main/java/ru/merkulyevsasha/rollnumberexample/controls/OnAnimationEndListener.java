@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.rollnumberexample;
+package ru.merkulyevsasha.rollnumberexample.controls;
 
 /**
  * Created by sasha on 18.03.2017.

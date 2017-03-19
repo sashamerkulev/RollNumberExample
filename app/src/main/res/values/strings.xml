@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RollNumberExample</string>
+    <string name="app_name">RollNumber</string>
     <string name="start_button_title">Start</string>
     <string name="stop_button_title">Stop</string>
     <string name="number_empty_validation_message">Number cannot be empty.</string>
