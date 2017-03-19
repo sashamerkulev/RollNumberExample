@@ -78,7 +78,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
     }
 
     public void inc() {
-        if (animationEnd) {
+        if (animationEnd && isStable()) {
             number++;
             animationEnd = false;
             incrementOperation = true;
@@ -88,7 +88,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
     }
 
     public void dec() {
-        if (animationEnd) {
+        if (animationEnd && isStable()) {
             number--;
             animationEnd = false;
             incrementOperation = false;
@@ -139,15 +139,18 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
         return sb.toString();
     }
 
-    public void setNumber(int newNumber) {
-        String newNumberString = getNumberString(newNumber);
+    private boolean isStable(){
         String numberString = getNumberString(number);
         String digitsString = getStringDigits();
+        return numberString.equals(digitsString);
+    }
 
-        if (!numberString.equals(digitsString)){
+    public void setNumber(int newNumber) {
+        if (!isStable())
             return;
-        }
 
+        String newNumberString = getNumberString(newNumber);
+        String numberString = getNumberString(number);
         this.number = newNumber;
 
         for(int i=0; i < newNumberString.length(); i++){
