@@ -3,5 +3,6 @@
     <string name="start_button_title">Start</string>
     <string name="stop_button_title">Stop</string>
     <string name="number_empty_validation_message">Number cannot be empty.</string>
-
+    <string name="setnumber_button_title">Set number</string>
+    <string name="generatenumber_button_title">Generate number</string>
 </resources>

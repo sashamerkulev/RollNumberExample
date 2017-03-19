@@ -31,7 +31,7 @@
 
                 </ru.merkulyevsasha.rollnumberexample.RollNumber>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -49,10 +49,30 @@
                             android:id="@+id/decrement"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/increment"
                             android:text="-"
                             />
 
-                </LinearLayout>
+                        <Button
+                            android:id="@+id/button_start_inc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/increment"
+                            android:text="@string/start_button_title"
+                            />
+
+                        <Button
+                            android:id="@+id/button_start_dec"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/decrement"
+                            android:layout_below="@+id/button_start_inc"
+                            android:text="@string/start_button_title"
+                            />
+
+
+
+                </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -71,17 +91,17 @@
                     android:id="@+id/button_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Set"
-                    />
-
-                <Button
-                    android:id="@+id/button_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Start"
+                    android:text="@string/setnumber_button_title"
                     />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/random"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/generatenumber_button_title"
+            />
 
 </LinearLayout>
 

@@ -8,12 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mStart;
+    private Button mStartIncrement;
+    private Button mStartDecrement;
     private RollNumber mRollNumber;
 
     private Timer mTimer;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 mRollNumber.inc();
             }
         });
+
         Button decr = (Button)findViewById(R.id.decrement);
         decr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,16 +67,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mTimer = new Timer();
-        mTask = getNewTimerTask();
 
-        mStart = (Button)findViewById(R.id.button_start);
-        mStart.setOnClickListener(new View.OnClickListener() {
+        mStartIncrement = (Button)findViewById(R.id.button_start_inc);
+        mStartIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = mStart.getText().toString();
+                String title = mStartIncrement.getText().toString();
                 if (title.equals(getString(R.string.start_button_title))){
-                    mStart.setText(R.string.stop_button_title);
+                    mStartIncrement.setText(R.string.stop_button_title);
                     try {
+                        cancelTimer();
+                        mTask = getNewIncTimerTask();
                         mTimer.schedule(mTask, 0, 1000);
                     } catch(Exception e){
                         e.printStackTrace();
@@ -85,9 +89,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mStartDecrement = (Button)findViewById(R.id.button_start_dec);
+        mStartDecrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = mStartDecrement.getText().toString();
+                if (title.equals(getString(R.string.start_button_title))){
+                    mStartDecrement.setText(R.string.stop_button_title);
+                    try {
+                        cancelTimer();
+                        mTask = getNewDecTimerTask();
+                        mTimer.schedule(mTask, 0, 1000);
+                    } catch(Exception e){
+                        e.printStackTrace();
+                        System.out.println(e.getMessage());
+                    }
+                } else {
+                    cancelTimer();
+                }
+            }
+        });
+
+        Button random = (Button)findViewById(R.id.random);
+        random.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelTimer();
+                Random rand = new Random();
+                int n = rand.nextInt(999999);
+                mRollNumber.setNumber(n);
+            }
+        });
+
+
     }
 
-    private TimerTask getNewTimerTask(){
+    private TimerTask getNewIncTimerTask(){
         return new TimerTask() {
             @Override
             public void run() {
@@ -101,10 +138,25 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    private TimerTask getNewDecTimerTask(){
+        return new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRollNumber.dec();
+                    }
+                });
+            }
+        };
+    }
+
     private void cancelTimer(){
-        mStart.setText(R.string.start_button_title);
+        mStartIncrement.setText(R.string.start_button_title);
+        mStartDecrement.setText(R.string.start_button_title);
         mTimer.cancel();
-        mTask  = getNewTimerTask();
+        mTask  = null;
         mTimer = new Timer();
     }
 
