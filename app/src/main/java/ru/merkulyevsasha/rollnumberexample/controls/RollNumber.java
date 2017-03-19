@@ -59,6 +59,7 @@ public class RollNumber extends LinearLayout {
     }
 
     public void onStart(Context context){
+        clearAnimation();
         for(int i=0; i < rollDigits.length; i++){
             rollDigits[i].onStart(context);
         }
