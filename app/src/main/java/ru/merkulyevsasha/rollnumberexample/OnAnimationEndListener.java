@@ -5,5 +5,5 @@ package ru.merkulyevsasha.rollnumberexample;
  */
 
 public interface OnAnimationEndListener {
-    void onAnimationEnd(boolean nextDigit);
+    void onAnimationEnd(boolean overflow);
 }

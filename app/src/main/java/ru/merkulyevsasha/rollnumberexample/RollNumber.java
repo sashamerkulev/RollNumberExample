@@ -13,16 +13,14 @@ import android.widget.LinearLayout;
  * Created by sasha on 17.03.2017.
  */
 
-public class RollNumber extends LinearLayout implements OnAnimationEndListener {
+public class RollNumber extends LinearLayout {
 
     private int digits;
     private int number;
 
     private RollDigit[] rollDigits;
 
-    private int current_digit;
-    private boolean incrementOperation;
-    private boolean animationEnd = true;
+    //private boolean animationEnd = true;
 
     public RollNumber(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -78,52 +76,16 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
     }
 
     public void inc() {
-        if (animationEnd && isStable()) {
+        if (isStable()) {
             number++;
-            animationEnd = false;
-            incrementOperation = true;
-            current_digit = digits - 1;
-            incrementIf(current_digit);
+            startOperation(OperationEnum.Increment, digits);
         }
     }
 
     public void dec() {
-        if (animationEnd && isStable()) {
+        if (isStable()) {
             number--;
-            animationEnd = false;
-            incrementOperation = false;
-            current_digit = digits - 1;
-            decrementIf(current_digit);
-        }
-    }
-
-    private void decrementIf(int current) {
-        if (current_digit >= 0) {
-            rollDigits[current].dec(this);
-        } else {
-            animationEnd = true;
-        }
-    }
-
-    private void incrementIf(int current) {
-        if (current >= 0) {
-            rollDigits[current].inc(this);
-        } else {
-            animationEnd = true;
-        }
-    }
-
-    @Override
-    public void onAnimationEnd(boolean nextDigit) {
-        if (nextDigit) {
-            current_digit--;
-            if (incrementOperation) {
-                incrementIf(current_digit);
-            } else {
-                decrementIf(current_digit);
-            }
-        } else {
-            animationEnd = true;
+            startOperation(OperationEnum.Decrement, digits);
         }
     }
 
@@ -161,15 +123,29 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
                 continue;
 
             if (newDigit > oldDigit) {
-                AnimationIncCounter inccount = new AnimationIncCounter(i, newDigit - oldDigit);
-                inccount.start();
+                startOperation(OperationEnum.Increment, i, newDigit - oldDigit);
             }
 
             if (newDigit < oldDigit){
-                AnimationDecCounter deccount = new AnimationDecCounter(i, oldDigit - newDigit);
-                deccount.start();
+                startOperation(OperationEnum.Decrement, i, oldDigit - newDigit );
             }
         }
+    }
+
+    Operation startOperation(OperationEnum operationEnum, int digits){
+        Operation oper = operationEnum == OperationEnum.Decrement
+                ? new Decrement(digits-1)
+                : new Increment(digits-1);
+        oper.start();
+        return oper;
+    }
+
+    AnimationCounter startOperation(OperationEnum operationEnum, int digit, int times){
+        AnimationCounter counter = operationEnum == OperationEnum.Decrement
+                ? new AnimationDecCounter(digit, times)
+                : new AnimationIncCounter(digit, times);
+        counter.start();
+        return counter;
     }
 
     private abstract class AnimationCounter  implements OnAnimationEndListener{
@@ -184,7 +160,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
         public abstract void start();
 
         @Override
-        public void onAnimationEnd(boolean nextDigit) {
+        public void onAnimationEnd(boolean overflow) {
             animationCounter--;
             if (animationCounter > 0){
                 start();
@@ -198,6 +174,7 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
             super(digit, counter);
         }
 
+        @Override
         public void start(){
             rollDigits[digit].inc(this);
         }
@@ -210,6 +187,59 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
             super(digit, counter);
         }
 
+        @Override
+        public void start(){
+            rollDigits[digit].dec(this);
+        }
+
+    }
+
+    private enum OperationEnum {
+        Increment,
+        Decrement
+    }
+
+    private abstract class Operation implements OnAnimationEndListener{
+
+        int digit;
+        Operation(int digit){
+            this.digit = digit;
+        }
+
+        @Override
+        public void onAnimationEnd(boolean overflow) {
+            if (overflow){
+                digit--;
+                if (digit >=0){
+                    start();
+                }
+            }
+        }
+
+        public abstract void start();
+
+    }
+
+    private class Increment extends Operation {
+
+        Increment(int digit){
+            super(digit);
+        }
+
+        @Override
+        public void start(){
+            rollDigits[digit].inc(this);
+        }
+
+    }
+
+    private class Decrement extends Operation {
+
+        Decrement(int digit){
+            super(digit);
+        }
+
+        @Override
         public void start(){
             rollDigits[digit].dec(this);
         }
