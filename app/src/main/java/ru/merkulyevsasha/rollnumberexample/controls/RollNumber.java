@@ -82,6 +82,9 @@ public class RollNumber extends LinearLayout {
     public void inc() {
         if (isStable()) {
             number++;
+            if (number > getMaxNumber()){
+                number = 0;
+            }
             Operation.startOperation(OperationEnum.Increment, digits, rollDigits);
         }
     }
@@ -89,12 +92,23 @@ public class RollNumber extends LinearLayout {
     public void dec() {
         if (isStable()) {
             number--;
+            if (number < 0){
+                number = getMaxNumber();
+            }
             Operation.startOperation(OperationEnum.Decrement, digits, rollDigits);
         }
     }
 
     public int getNumber(){
         return number;
+    }
+
+    private int getMaxNumber(){
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i <digits; i++){
+            sb.append("9");
+        }
+        return Integer.parseInt(sb.toString());
     }
 
     private String getStringDigits(){
