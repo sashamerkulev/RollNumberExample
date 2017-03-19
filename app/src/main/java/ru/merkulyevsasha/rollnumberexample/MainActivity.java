@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = mStartIncrement.getText().toString();
                 if (title.equals(getString(R.string.start_button_title))){
-                    mStartIncrement.setText(R.string.stop_button_title);
                     try {
                         cancelTimer();
+                        mStartIncrement.setText(R.string.stop_button_title);
                         mTask = getNewIncTimerTask();
                         mTimer.schedule(mTask, 0, 1000);
                     } catch(Exception e){
@@ -97,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = mStartDecrement.getText().toString();
                 if (title.equals(getString(R.string.start_button_title))){
-                    mStartDecrement.setText(R.string.stop_button_title);
                     try {
                         cancelTimer();
+                        mStartDecrement.setText(R.string.stop_button_title);
                         mTask = getNewDecTimerTask();
                         mTimer.schedule(mTask, 0, 1000);
                     } catch(Exception e){
