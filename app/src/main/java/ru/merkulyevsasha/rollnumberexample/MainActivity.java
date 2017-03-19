@@ -126,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mRollNumber.onStart(this);
+    }
+
     private TimerTask getNewIncTimerTask(){
         return new TimerTask() {
             @Override

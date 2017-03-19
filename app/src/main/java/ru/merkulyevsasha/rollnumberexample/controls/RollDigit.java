@@ -46,7 +46,9 @@ public class RollDigit extends LinearLayout{
     public RollDigit(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        Init(context);
+        normalTextPaint = new Paint();
+        normalTextBounds = new Rect();
+        views = new TextView[3];
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(
                 attrs, R.styleable.RollDigit, 0, 0);
@@ -58,8 +60,6 @@ public class RollDigit extends LinearLayout{
 
             textSize = attributes.getInteger(R.styleable.RollDigit_textSize, 24);
             calculateTextBounds();
-            setDigit(digit);
-            setTextSize();
 
         } finally {
             attributes.recycle();
@@ -69,25 +69,28 @@ public class RollDigit extends LinearLayout{
 
         setLayoutParams(context, attrs);
 
-        addView(views[0]);
-        addView(views[1]);
-        addView(views[2]);
-        addView(hiddenDigit);
-
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
 
+        onStart(context);
     }
 
-    private void Init(@NonNull Context context) {
-        normalTextPaint = new Paint();
-        normalTextBounds = new Rect();
-        views = new TextView[3];
+    public void onStart(@NonNull Context context) {
 
         views[0] = createTextView(context, View.VISIBLE);
         views[1] = createTextView(context, View.VISIBLE);
         views[2] = createTextView(context, View.VISIBLE);
         hiddenDigit = createTextView(context, View.GONE);
+
+        setDigit(digit);
+        setTextSize();
+
+        clearAnimation();
+        removeAllViews();
+        addView(views[0]);
+        addView(views[1]);
+        addView(views[2]);
+        addView(hiddenDigit);
     }
 
     private void setLayoutParams(@NonNull Context context, @Nullable AttributeSet attrs) {

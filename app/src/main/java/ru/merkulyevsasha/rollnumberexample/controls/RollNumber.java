@@ -58,6 +58,12 @@ public class RollNumber extends LinearLayout {
 
     }
 
+    public void onStart(Context context){
+        for(int i=0; i < rollDigits.length; i++){
+            rollDigits[i].onStart(context);
+        }
+    }
+
     private String getNumberString(int number) {
         String numberString = String.valueOf(number);
         if (digits <= numberString.length()){
