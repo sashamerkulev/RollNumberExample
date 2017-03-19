@@ -131,11 +131,24 @@ public class RollNumber extends LinearLayout implements OnAnimationEndListener {
         return number;
     }
 
+    private String getStringDigits(){
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i < rollDigits.length; i++){
+            sb.append(rollDigits[i].getDigit());
+        }
+        return sb.toString();
+    }
+
     public void setNumber(int newNumber) {
         String newNumberString = getNumberString(newNumber);
         String numberString = getNumberString(number);
-        this.number = newNumber;
+        String digitsString = getStringDigits();
 
+        if (!numberString.equals(digitsString)){
+            return;
+        }
+
+        this.number = newNumber;
 
         for(int i=0; i < newNumberString.length(); i++){
             int newDigit = Integer.parseInt(newNumberString.substring(i, i+1));
