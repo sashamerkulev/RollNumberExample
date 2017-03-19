@@ -20,16 +20,11 @@ public class RollNumber extends LinearLayout {
 
     private RollDigit[] rollDigits;
 
-    //private boolean animationEnd = true;
-
     public RollNumber(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RollNumber,
-                0, 0);
-
+                attrs, R.styleable.RollNumber, 0, 0);
         try {
             digits = attributes.getInteger(R.styleable.RollNumber_digits, 6);
             number = attributes.getInteger(R.styleable.RollNumber_number, 0);
