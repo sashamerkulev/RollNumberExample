@@ -6,11 +6,11 @@ package ru.merkulyevsasha.rollnumberexample.controls;
 
 abstract class AnimationCounter  implements OnAnimationEndListener{
     final int digit;
-    private int animationCounter;
+    private int animationTimes;
     final RollDigit[] rollDigits;
 
-    AnimationCounter(int digit, int counter, RollDigit[] rollDigits){
-        this.animationCounter = counter;
+    AnimationCounter(int digit, int times, RollDigit[] rollDigits){
+        this.animationTimes = times;
         this.digit = digit;
         this.rollDigits = rollDigits;
     }
@@ -19,8 +19,8 @@ abstract class AnimationCounter  implements OnAnimationEndListener{
 
     @Override
     public void onAnimationEnd(boolean overflow) {
-        animationCounter--;
-        if (animationCounter > 0){
+        animationTimes--;
+        if (animationTimes > 0){
             start();
         }
     }
