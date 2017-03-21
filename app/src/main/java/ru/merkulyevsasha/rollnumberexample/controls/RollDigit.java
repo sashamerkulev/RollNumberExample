@@ -159,10 +159,9 @@ public class RollDigit extends LinearLayout{
     }
 
     private ObjectAnimator getObjectAnimator(TextView view, String propertyName, float start, float stop){
-        ObjectAnimator result = ObjectAnimator
+        return ObjectAnimator
                 .ofFloat(view, propertyName, start, stop)
                 .setDuration(DURATION);
-        return result;
     }
 
     private ObjectAnimator getTextSizeObjectAnimator(TextView view, float start, float stop){
