@@ -158,41 +158,36 @@ public class RollDigit extends LinearLayout{
         return prev;
     }
 
+    private ObjectAnimator getObjectAnimator(TextView view, String propertyName, float start, float stop){
+        ObjectAnimator result = ObjectAnimator
+                .ofFloat(view, propertyName, start, stop)
+                .setDuration(DURATION);
+        return result;
+    }
+
+    private ObjectAnimator getTextSizeObjectAnimator(TextView view, float start, float stop){
+        return getObjectAnimator(view, "textSize", start, stop);
+    }
+
+    private ObjectAnimator getYObjectAnimator(TextView view, float start, float stop){
+        return getObjectAnimator(view, "y", start, stop);
+    }
+
     public void dec(final OnAnimationEndListener callback) {
 
         hiddenDigit.setText(String.valueOf(prevNumber(prevNumber(digit))));
 
         final float prevYStart = views[0].getY();
-
         final float numberYStart = views[1].getY();
-
         final float nextYStart = views[2].getY();
 
-        ObjectAnimator yPrevPrevAnimator = ObjectAnimator
-                .ofFloat(hiddenDigit, "y", -normalTextBounds.height(), prevYStart)
-                .setDuration(DURATION);
-
-        ObjectAnimator yPrevAnimator = ObjectAnimator
-                .ofFloat(views[0], "y", prevYStart, numberYStart)
-                .setDuration(DURATION);
-        ObjectAnimator sizePrevAnimator = ObjectAnimator
-                .ofFloat(views[0], "textSize", textSize*TEXTSIZE, textSize)
-                .setDuration(DURATION);
-
-        ObjectAnimator yNumberAnimator = ObjectAnimator
-                .ofFloat(views[1], "y", numberYStart, nextYStart)
-                .setDuration(DURATION);
-        ObjectAnimator sizeNumberAnimator = ObjectAnimator
-                .ofFloat(views[1], "textSize", textSize, textSize*TEXTSIZE)
-                .setDuration(DURATION);
-
-        ObjectAnimator yNextAnimator = ObjectAnimator
-                .ofFloat(views[2], "y", nextYStart, nextYStart+normalTextBounds.height()*2)
-                .setDuration(DURATION);
-
         AnimatorSet mAnimator = new AnimatorSet();
-        mAnimator.play(yNumberAnimator).with(sizeNumberAnimator)
-                .with(yNextAnimator).with(yPrevAnimator).with(sizePrevAnimator).with(yPrevPrevAnimator);
+        mAnimator.play(getYObjectAnimator(views[1], numberYStart, nextYStart))
+                .with(getTextSizeObjectAnimator(views[1], textSize, textSize*TEXTSIZE))
+                .with(getYObjectAnimator(views[2], nextYStart, nextYStart+normalTextBounds.height()*2))
+                .with(getYObjectAnimator(views[0], prevYStart, numberYStart))
+                .with(getTextSizeObjectAnimator(views[0], textSize*TEXTSIZE, textSize))
+                .with(getYObjectAnimator(hiddenDigit, -normalTextBounds.height(), prevYStart));
 
         mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -213,22 +208,16 @@ public class RollDigit extends LinearLayout{
                 views[2] = views[1];
                 views[1] = views[0];
                 views[0] = hiddenDigit;
-
                 hiddenDigit = tmp;
-                //tmp.setVisibility(View.GONE);
+
                 callback.onAnimationEnd(overflow);
-
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) { }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) { }
         });
 
 
@@ -240,36 +229,16 @@ public class RollDigit extends LinearLayout{
         hiddenDigit.setText(String.valueOf(nextNumber(nextNumber(digit))));
 
         final float prevYStart = views[0].getY();
-
         final float numberYStart = views[1].getY();
-
         final float nextYStart = views[2].getY();
 
-        ObjectAnimator yPrevAnimator = ObjectAnimator
-                .ofFloat(views[0], "y", prevYStart, -normalTextBounds.height())
-                .setDuration(DURATION);
-
-        ObjectAnimator yNumberAnimator = ObjectAnimator
-                .ofFloat(views[1], "y", numberYStart, prevYStart)
-                .setDuration(DURATION);
-        ObjectAnimator sizeNumberAnimator = ObjectAnimator
-                .ofFloat(views[1], "textSize", textSize, textSize*TEXTSIZE)
-                .setDuration(DURATION);
-
-        ObjectAnimator yNextAnimator = ObjectAnimator
-                .ofFloat(views[2], "y", nextYStart, numberYStart)
-                .setDuration(DURATION);
-        ObjectAnimator sizeNextAnimator = ObjectAnimator
-                .ofFloat(views[2], "textSize", textSize*TEXTSIZE, textSize)
-                .setDuration(DURATION);
-
-        ObjectAnimator yNextNextAnimator = ObjectAnimator
-                .ofFloat(hiddenDigit, "y", nextYStart+normalTextBounds.height(), nextYStart)
-                .setDuration(DURATION);
-
         AnimatorSet mAnimator = new AnimatorSet();
-        mAnimator.play(yNumberAnimator).with(sizeNumberAnimator)
-                .with(yNextAnimator).with(sizeNextAnimator).with(yPrevAnimator).with(yNextNextAnimator);
+        mAnimator.play(getYObjectAnimator(views[1], numberYStart, prevYStart))
+                .with(getTextSizeObjectAnimator(views[1], textSize, textSize*TEXTSIZE))
+                .with(getYObjectAnimator(views[2], nextYStart, numberYStart))
+                .with(getTextSizeObjectAnimator(views[2], textSize*TEXTSIZE, textSize))
+                .with(getYObjectAnimator(views[0], prevYStart, -normalTextBounds.height()))
+                .with(getYObjectAnimator(hiddenDigit, nextYStart+normalTextBounds.height(), nextYStart));
 
         mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -287,25 +256,19 @@ public class RollDigit extends LinearLayout{
                 }
 
                 TextView tmp = views[0];
-
                 views[0] = views[1];
                 views[1] = views[2];
                 views[2] = hiddenDigit;
-
                 hiddenDigit = tmp;
-                //tmp.setVisibility(View.GONE);
+
                 callback.onAnimationEnd(overflow);
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) { }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) { }
         });
 
         mAnimator.start();
